@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:3333
+
+### AppController
+# @name AppControllerGet
+GET {{baseUrl}}/
+
+###
+# @name AppControllerGetExample
+GET {{baseUrl}}/example
+
+### AutomaticConceptsController
+# @name AutomaticConceptsControllerGet
+GET {{baseUrl}}/automatic-concepts
