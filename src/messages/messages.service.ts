@@ -13,4 +13,12 @@ export class MessagesService {
   create() {
     return `This action creates a new message`;
   }
+
+  update(id: string) {
+    return `This action updates a #${id} message`;
+  }
+
+  remove(id: string) {
+    return `This action removes a #${id} message`;
+  }
 }
