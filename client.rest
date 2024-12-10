@@ -9,16 +9,29 @@ GET {{baseUrl}}/
 GET {{baseUrl}}/automatic-concepts
 
 ###
-# @name AppControllerGetExample
-GET {{baseUrl}}/messages
+# @name MessagesController
+### Find all messages
+GET {{baseUrl}}/messages/
+//?limit=10&offset=10
 
-###
+### Find one messages
 GET {{baseUrl}}/messages/1
 
-###
+### Create messages
 Post {{baseUrl}}/messages
 Content-Type: application/json
 
 {
   "messages": "Hello World this is a messages."
 }
+
+### Update messages
+PATCH {{baseUrl}}/messages/1
+Content-Type: application/json
+
+{
+  "messages": "Hello World this is a update messages."
+}
+
+### Delete messages
+DELETE {{baseUrl}}/messages/1
