@@ -4,10 +4,21 @@
 # @name AppControllerGet
 GET {{baseUrl}}/
 
-###
-# @name AppControllerGetExample
-GET {{baseUrl}}/example
-
 ### AutomaticConceptsController
 # @name AutomaticConceptsControllerGet
 GET {{baseUrl}}/automatic-concepts
+
+###
+# @name AppControllerGetExample
+GET {{baseUrl}}/messages
+
+###
+GET {{baseUrl}}/messages/1
+
+###
+Post {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "messages": "Hello World this is a messages."
+}
