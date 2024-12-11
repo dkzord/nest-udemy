@@ -2,13 +2,13 @@ import {
   Get,
   Body,
   Post,
+  Patch,
   Param,
+  Query,
+  Delete,
   HttpCode,
   Controller,
   HttpStatus,
-  Patch,
-  Delete,
-  Query,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 
@@ -33,32 +33,23 @@ export class MessagesController {
   @Get()
   findAll(@Query() pagination: any): any {
     console.log(pagination);
-    const { limit = 10, offset = 0 } = pagination;
-
-    return {
-      limit,
-      offset,
-    };
+    // const { limit = 10, offset = 0 } = pagination;
+    return this.messagesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): string {
-    return this.messagesService.getFindOne(id);
+  findOne(@Param('id') id: string) {
+    return this.messagesService.findOne(id);
   }
 
   @Post()
   create(@Body() body: any) {
-    console.log(body);
-    return this.messagesService.create();
+    return this.messagesService.create(body);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body: any) {
-    console.log(body);
-    return {
-      id,
-      ...body,
-    };
+    return this.messagesService.update(id, body);
   }
 
   @Delete(':id')
