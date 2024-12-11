@@ -22,16 +22,24 @@ Post {{baseUrl}}/messages
 Content-Type: application/json
 
 {
-  "messages": "Hello World this is a messages."
+  "text": "New message",
+  "from": "Johnny Bravo",
+  "to": "Jane Bravo",
+  "read": false,
+  "data": "2024-12-10T23:27:47.751Z"
 }
 
 ### Update messages
-PATCH {{baseUrl}}/messages/1
+PATCH {{baseUrl}}/messages/2
 Content-Type: application/json
 
 {
-  "messages": "Hello World this is a update messages."
+  "text": "Update message!!!",
+  "from": "Johnny Bravo",
+  "to": "Jane Bravo",
+  "read": false,
+  "data": "2024-12-10T23:27:47.751Z"
 }
 
 ### Delete messages
-DELETE {{baseUrl}}/messages/1
+DELETE {{baseUrl}}/messages/2
