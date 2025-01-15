@@ -22,11 +22,9 @@ Post {{baseUrl}}/messages
 Content-Type: application/json
 
 {
-  "text": "New message",
+  "text": "Hello, this is a test",
   "from": "Johnny Bravo",
-  "to": "Jane Bravo",
-  "read": false,
-  "data": "2024-12-10T23:27:47.751Z"
+  "to": "Jane Bravo"
 }
 
 ### Update messages
@@ -34,11 +32,9 @@ PATCH {{baseUrl}}/messages/2
 Content-Type: application/json
 
 {
-  "text": "Update message!!!",
-  "from": "Johnny Bravoaa",
-  "to": "Jane Bravoaa",
-  "read": false,
-  "data": "2024-12-10T23:27:47.751Z"
+  "text": " Hello, UPDATEEEEEE",
+  "from": "Johnny Bravaaao",
+  "to": "Jane Braveeeo"
 }
 
 ### Delete messages

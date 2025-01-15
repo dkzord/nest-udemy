@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { MessageEntity } from './entities/message.entity';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class MessagesService {
