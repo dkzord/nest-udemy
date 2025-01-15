@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { MessageEntity } from './entities/message.entity';
+import { CreateMessageDto } from './dtos/create-message.dto';
+import { UpdateMessageDto } from './dtos/update-message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -15,38 +17,53 @@ export class MessagesService {
     },
   ];
 
+  trowNotFoundError(error: string) {
+    // throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
+    //  thorw new BadRequestException(error);
+
+    throw new NotFoundException(error);
+  }
+
   findAll() {
     return this.messages;
   }
 
   findOne(id: string) {
-    return this.messages.find((message) => message.id === +id);
+    const message = this.messages.find((message) => message.id === +id);
+
+    if (message) {
+      return message;
+    }
+
+    this.trowNotFoundError('Message not found');
   }
 
-  create(body: any) {
+  create(createMessageDto: CreateMessageDto) {
     this.lastId++;
     const id = this.lastId;
     const newMessage = {
       id,
-      ...body,
+      ...createMessageDto,
+      read: false,
+      data: new Date(),
     };
 
     this.messages.push(newMessage);
     return newMessage;
   }
 
-  update(id: string, body: any) {
+  update(id: string, updateMessageDto: UpdateMessageDto) {
     const indexMessageExists = this.messages.findIndex(
       (message) => message.id === +id,
     );
 
     if (indexMessageExists === -1) {
-      return 'Message not found';
+      return this.trowNotFoundError('Message not found');
     }
 
     const updatedMessage = (this.messages[indexMessageExists] = {
       ...this.messages[indexMessageExists],
-      ...body,
+      ...updateMessageDto,
     });
 
     return updatedMessage;
@@ -58,11 +75,11 @@ export class MessagesService {
     );
 
     if (indexMessageExists === -1) {
-      return 'Message not found';
+      return this.trowNotFoundError('Message not found');
     }
 
-    this.messages.splice(indexMessageExists, 1);
+    const messsage = this.messages.splice(indexMessageExists, 1);
 
-    return 'Message removed';
+    return messsage;
   }
 }
