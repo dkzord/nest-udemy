@@ -11,11 +11,11 @@ GET {{baseUrl}}/automatic-concepts
 ###
 # @name MessagesController
 ### Find all messages
-GET {{baseUrl}}/messages/
+GET {{baseUrl}}/messages
 //?limit=10&offset=10
 
 ### Find one messages
-GET {{baseUrl}}/messages/1
+GET {{baseUrl}}/messages/10
 
 ### Create messages
 Post {{baseUrl}}/messages
@@ -35,8 +35,8 @@ Content-Type: application/json
 
 {
   "text": "Update message!!!",
-  "from": "Johnny Bravo",
-  "to": "Jane Bravo",
+  "from": "Johnny Bravoaa",
+  "to": "Jane Bravoaa",
   "read": false,
   "data": "2024-12-10T23:27:47.751Z"
 }
