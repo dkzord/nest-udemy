@@ -28,8 +28,8 @@ export class MessagesService {
     return this.messages;
   }
 
-  findOne(id: string) {
-    const message = this.messages.find((message) => message.id === +id);
+  findOne(id: number) {
+    const message = this.messages.find((message) => message.id === id);
 
     if (message) {
       return message;
@@ -69,12 +69,12 @@ export class MessagesService {
     return updatedMessage;
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const indexMessageExists = this.messages.findIndex(
-      (message) => message.id === +id,
+      (message) => message.id === id,
     );
 
-    if (indexMessageExists === -1) {
+    if (indexMessageExists < 0) {
       return this.trowNotFoundError('Message not found');
     }
 

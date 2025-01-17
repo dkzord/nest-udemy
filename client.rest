@@ -15,7 +15,7 @@ GET {{baseUrl}}/messages
 //?limit=10&offset=10
 
 ### Find one messages
-GET {{baseUrl}}/messages/10
+GET {{baseUrl}}/messages/2
 
 ### Create messages
 Post {{baseUrl}}/messages
@@ -34,7 +34,9 @@ Content-Type: application/json
 {
   "text": " Hello, UPDATEEEEEE",
   "from": "Johnny Bravaaao",
-  "to": "Jane Braveeeo"
+  "to": "Jane Braveeeo",
+  "read": true,
+  "bla": "bla bla bla"
 }
 
 ### Delete messages

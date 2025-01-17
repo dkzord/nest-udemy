@@ -9,6 +9,7 @@ import {
   HttpCode,
   Controller,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dtos/create-message.dto';
@@ -43,7 +44,7 @@ export class MessagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.messagesService.findOne(id);
   }
 
@@ -58,7 +59,7 @@ export class MessagesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.messagesService.remove(id);
   }
 }
