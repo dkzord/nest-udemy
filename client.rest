@@ -34,10 +34,7 @@ Content-Type: application/json
 {
   "text": " Hello, UPDATEEEEEE",
   "from": "Johnny Bravaaao",
-  "to": "Jane Braveeeo",
-  "read": true,
-  "bla": "bla bla bla"
 }
 
 ### Delete messages
-DELETE {{baseUrl}}/messages/2
+DELETE {{baseUrl}}/messages/1

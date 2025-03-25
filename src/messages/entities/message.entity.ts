@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -31,4 +32,7 @@ export class MessageEntity {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @DeleteDateColumn({ select: false, nullable: true })
+  deletedAt: Date | null;
 }
