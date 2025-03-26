@@ -59,9 +59,13 @@ export class MessagesService {
   }
 
   async update(id: number, updateMessageDto: UpdateMessageDto) {
+    const partialUpdateDto = {
+      read: updateMessageDto.read,
+      text: updateMessageDto.text,
+    };
     const message = await this.messageRepository.preload({
       id,
-      ...updateMessageDto,
+      ...partialUpdateDto,
     });
 
     if (message) return this.messageRepository.save(message);
@@ -70,12 +74,8 @@ export class MessagesService {
   }
 
   async remove(id: number) {
-    const message = await this.messageRepository.findOneBy({
-      id,
-    });
+    this.messageRepository.softDelete(id);
 
-    if (message) return this.messageRepository.remove(message);
-
-    this.trowNotFoundError('Message not found');
+    return true;
   }
 }

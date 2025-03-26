@@ -21,7 +21,7 @@ export class MessageEntity {
   @Column({ type: 'varchar', length: 50 })
   to: string;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   read: boolean;
 
   @Column({ type: 'timestamp' })
