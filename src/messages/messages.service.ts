@@ -12,22 +12,7 @@ export class MessagesService {
     private readonly messageRepository: Repository<MessageEntity>,
   ) {}
 
-  private messages: MessageEntity[] = [
-    {
-      id: 1,
-      text: 'Hello world! It`s a test message',
-      from: 'John Doe',
-      to: 'Jane Doe',
-      read: false,
-      data: new Date(),
-      deletedAt: null,
-    },
-  ];
-
   trowNotFoundError(error: string) {
-    // throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
-    //  thorw new BadRequestException(error);
-
     throw new NotFoundException(error);
   }
 

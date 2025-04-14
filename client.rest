@@ -23,7 +23,7 @@ Content-Type: application/json
 
 {
   "text": "Hello, this is a test",
-  "from": "Johnny Bravo",
+  "from": "Johnny Nuevo",
   "to": "Jane Bravo"
 }
 
@@ -32,9 +32,44 @@ PATCH {{baseUrl}}/messages/2
 Content-Type: application/json
 
 {
-  "text": " Hello, UPDATEEEEEE",
-  "from": "Johnny Bravaaao",
+  "text": "Hello, TestNovo",
+  "from": "Johnny Bravaaao"
 }
 
 ### Delete messages
-DELETE {{baseUrl}}/messages/1
+DELETE {{baseUrl}}/messages/5
+
+
+
+
+
+
+
+### PeopleController
+# @name PeopleControllerGet
+GET {{baseUrl}}/people
+//?limit=10&offset=10
+### Find one people
+GET {{baseUrl}}/people/2
+
+### Create Person
+Post {{baseUrl}}/people
+Content-Type: application/json
+
+{
+  "email": "exemplo3@gmail.com",
+  "password": "123456789",
+  "name": "Fernando"
+}
+
+### Update messages
+PATCH {{baseUrl}}/people/12
+Content-Type: application/json
+
+{
+  "email": "exemplo113@gmail.com",
+  "name": "Joaquim"
+}
+
+### Delete people
+DELETE {{baseUrl}}/people/8
