@@ -1,9 +1,11 @@
 import { IsEmail } from 'class-validator';
+import { MessageEntity } from 'src/messages/entities/message.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -30,4 +32,14 @@ export class Person {
 
   @DeleteDateColumn({ select: false, nullable: true })
   deletedAt: Date | null;
+
+  // Uma pessoa pode enviar muitos recados (emissor).
+  // Esses recados são relacionados ao campo 'from' da entidade MessageEntity.
+  @OneToMany(() => MessageEntity, (message) => message.from)
+  messagesSent: MessageEntity[];
+
+  // Uma pessoa pode receber muitos recados (destinatário).
+  // Esses recados são relacionados ao campo 'to' da entidade MessageEntity.
+  @OneToMany(() => MessageEntity, (message) => message.to)
+  messagesReceived: MessageEntity[];
 }

@@ -45,7 +45,15 @@ export class PeopleService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} person`;
+    const person = this.personRepository.findOneBy({
+      id,
+    });
+
+    if (!person) {
+      throw new NotFoundException('Person not found');
+    }
+
+    return person;
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto) {

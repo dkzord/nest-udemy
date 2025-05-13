@@ -23,8 +23,8 @@ Content-Type: application/json
 
 {
   "text": "Hello, this is a test",
-  "from": "Johnny Nuevo",
-  "to": "Jane Bravo"
+  "fromId": 12,
+  "toId": 10
 }
 
 ### Update messages
