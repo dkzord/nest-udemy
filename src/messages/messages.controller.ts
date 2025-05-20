@@ -1,19 +1,19 @@
 import {
-  Get,
   Body,
-  Post,
-  Patch,
-  Param,
-  Query,
-  Delete,
-  HttpCode,
   Controller,
+  Delete,
+  Get,
+  HttpCode,
   HttpStatus,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
-import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
+import { MessagesService } from './messages.service';
 
 /* 
   CRUD:
@@ -39,7 +39,7 @@ export class MessagesController {
   @HttpCode(HttpStatus.OK)
   @Get()
   findAll(@Query() pagination: any): any {
-    // const { limit = 10, offset = 0 } = pagination;
+    const { limit = 10, offset = 0 } = pagination;
     return this.messagesService.findAll();
   }
 

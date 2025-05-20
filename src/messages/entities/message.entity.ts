@@ -34,14 +34,14 @@ export class MessageEntity {
   deletedAt: Date | null;
 
   // Muitos recados podem ser enviados por uma única pessoa (emissor).
-  @ManyToOne(() => Person)
   // Especificando a coluna que armazena o ID da pessoa que enviou o recado.
+  @ManyToOne(() => Person, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'from' })
   from: Person;
 
   // Muitos recados podem ser enviados por uma única pessoa (destinatário).
-  @ManyToOne(() => Person)
   // Especificando a coluna 'to' que armazena o ID da pessoa que recebeu o recado.
+  @ManyToOne(() => Person, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'to' })
   to: Person;
 }

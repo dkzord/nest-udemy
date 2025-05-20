@@ -22,18 +22,17 @@ Post {{baseUrl}}/messages
 Content-Type: application/json
 
 {
-  "text": "Hello, this is a test",
-  "fromId": 12,
-  "toId": 10
+  "text": "Estamos todos juntos nessa.",
+  "fromId": 8,
+  "toId": 12
 }
 
 ### Update messages
-PATCH {{baseUrl}}/messages/2
+PATCH {{baseUrl}}/messages/10
 Content-Type: application/json
 
 {
-  "text": "Hello, TestNovo",
-  "from": "Johnny Bravaaao"
+  "read": true
 }
 
 ### Delete messages
@@ -72,4 +71,4 @@ Content-Type: application/json
 }
 
 ### Delete people
-DELETE {{baseUrl}}/people/8
+DELETE {{baseUrl}}/people/10
