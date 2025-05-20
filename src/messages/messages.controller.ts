@@ -11,6 +11,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessagesService } from './messages.service';
@@ -38,9 +39,8 @@ export class MessagesController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll(@Query() pagination: any): any {
-    const { limit = 10, offset = 0 } = pagination;
-    return this.messagesService.findAll();
+  findAll(@Query() paginationDto: PaginationDto): any {
+    return this.messagesService.findAll(paginationDto);
   }
 
   @Get(':id')

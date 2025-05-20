@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { PeopleService } from 'src/people/people.service';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dtos/create-message.dto';
@@ -18,8 +19,12 @@ export class MessagesService {
     throw new NotFoundException(error);
   }
 
-  async findAll() {
+  async findAll(paginationDto?: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
+
     const messages = await this.messageRepository.find({
+      take: limit,
+      skip: offset,
       relations: ['from', 'to'],
       where: { deletedAt: null },
       order: { id: 'desc' },

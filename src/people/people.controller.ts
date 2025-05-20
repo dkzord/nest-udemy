@@ -1,15 +1,17 @@
 import {
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
-import { PeopleService } from './people.service';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { PeopleService } from './people.service';
 
 @Controller('people')
 export class PeopleController {
@@ -21,8 +23,8 @@ export class PeopleController {
   }
 
   @Get()
-  findAll() {
-    return this.peopleService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.peopleService.findAll(paginationDto);
   }
 
   @Get(':id')
