@@ -10,8 +10,10 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessagesService } from './messages.service';
@@ -34,6 +36,7 @@ import { MessagesService } from './messages.service';
 */
 
 @Controller('messages')
+@UsePipes(ParseIntIdPipe)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
@@ -44,7 +47,7 @@ export class MessagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: number) {
     return this.messagesService.findOne(id);
   }
 
