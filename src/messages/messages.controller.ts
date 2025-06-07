@@ -10,9 +10,11 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { AddHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
 import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
@@ -37,6 +39,7 @@ import { MessagesService } from './messages.service';
 
 @Controller('messages')
 @UsePipes(ParseIntIdPipe)
+@UseInterceptors(AddHeaderInterceptor)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
