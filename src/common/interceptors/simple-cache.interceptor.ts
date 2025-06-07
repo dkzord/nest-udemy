@@ -8,7 +8,6 @@ export class SimpleCacheInterceptor implements NestInterceptor {
   private readonly cache = new Map();
 
   async intercept(context: ExecutionContext, next: CallHandler) {
-    console.log('SimpleCacheInterceptor: intercept called');
     const request = context.switchToHttp().getRequest();
     const url = request.url;
 

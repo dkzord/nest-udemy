@@ -10,13 +10,9 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { AddHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
-import { ErrorHandlingInterceptor } from 'src/common/interceptors/error-handling.interceptor';
-import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection.interceptor';
 import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
@@ -45,14 +41,12 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @Get()
-  @UseInterceptors(TimingConnectionInterceptor, ErrorHandlingInterceptor)
   @HttpCode(HttpStatus.OK)
   findAll(@Query() paginationDto: PaginationDto): any {
     return this.messagesService.findAll(paginationDto);
   }
 
   @Get(':id')
-  @UseInterceptors(AddHeaderInterceptor, ErrorHandlingInterceptor)
   findOne(@Param('id') id: number) {
     return this.messagesService.findOne(id);
   }

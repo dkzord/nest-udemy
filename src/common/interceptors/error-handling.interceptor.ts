@@ -11,8 +11,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class ErrorHandlingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('ErrorHandlingInterceptor: Intercepting request...');
-
     return next.handle().pipe(
       catchError((error: any) => {
         return throwError(() => {
