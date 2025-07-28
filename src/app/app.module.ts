@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AppController } from './app.controller';
-import { MessagesModule } from 'src/messages/messages.module';
+import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ErrorExceptionFilter } from 'src/common/filters/error-exception.filter';
+import { MessagesModule } from 'src/messages/messages.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '192.168.0.6',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       database: 'postgres',
@@ -19,6 +21,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     MessagesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ErrorExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
