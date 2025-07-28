@@ -10,9 +10,11 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
@@ -34,7 +36,7 @@ import { MessagesService } from './messages.service';
     Data Transfer Object (DTO) é um padrão de projeto de software usado para transferir dados entre subsistemas de um software. DTOs são frequentemente usados em conjunção com objetos de acesso a dados para obter dados de um banco de dados.
     Os DTOs no Nest são classes simples que são usadas para transferir dados entre objetos. Eles podem ser usados para validar dados, para transformar dados, para transferir dados entre diferentes partes do sistema ou para enviar dados para um cliente.
 */
-
+@UseGuards(IsAdminGuard)
 @Controller('messages')
 @UsePipes(ParseIntIdPipe)
 export class MessagesController {
