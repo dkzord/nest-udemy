@@ -19,6 +19,7 @@ import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessagesService } from './messages.service';
+import { MessagesUtils } from './messages.utils';
 
 /* 
   CRUD:
@@ -40,11 +41,18 @@ import { MessagesService } from './messages.service';
 @Controller('messages')
 @UsePipes(ParseIntIdPipe)
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(
+    private readonly messagesService: MessagesService,
+    private readonly messagesUtils: MessagesUtils,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll(@Query() paginationDto: PaginationDto): any {
+    console.log(
+      'Inverted String:',
+      this.messagesUtils.invertString('Fernando'),
+    );
     return this.messagesService.findAll(paginationDto);
   }
 
