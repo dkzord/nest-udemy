@@ -49,10 +49,6 @@ export class MessagesController {
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll(@Query() paginationDto: PaginationDto): any {
-    console.log(
-      'Inverted String:',
-      this.messagesUtils.invertString('Fernando'),
-    );
     return this.messagesService.findAll(paginationDto);
   }
 
