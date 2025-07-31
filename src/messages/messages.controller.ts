@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,10 +17,15 @@ import {
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
+import { OnlyLowercaseLettersRegex } from 'src/common/regex/only-lowercase-letters.regex';
+import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessagesService } from './messages.service';
-import { MessagesUtils } from './messages.utils';
+import {
+  ONLY_LOWERCASE_LETTERS_REGEX,
+  REMOVE_SPACES_REGEX,
+} from './server-name.constant';
 
 /* 
   CRUD:
@@ -43,7 +49,10 @@ import { MessagesUtils } from './messages.utils';
 export class MessagesController {
   constructor(
     private readonly messagesService: MessagesService,
-    private readonly messagesUtils: MessagesUtils,
+    @Inject(REMOVE_SPACES_REGEX)
+    private readonly removeSpacesRegex: RemoveSpacesRegex,
+    @Inject(ONLY_LOWERCASE_LETTERS_REGEX)
+    private readonly onlyLowercaseLettersRegex: OnlyLowercaseLettersRegex,
   ) {}
 
   @Get()
