@@ -12,7 +12,6 @@ export class SimpleCacheInterceptor implements NestInterceptor {
     const url = request.url;
 
     if (this.cache.has(url)) {
-      console.log(`Cache hit for URL: ${url}`);
       return of(this.cache.get(url));
     }
 
@@ -21,7 +20,6 @@ export class SimpleCacheInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((data) => {
         this.cache.set(url, data);
-        console.log(`Cache set for URL: ${url}`);
       }),
     );
   }

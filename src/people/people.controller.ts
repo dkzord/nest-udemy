@@ -9,17 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { MessagesUtils } from 'src/messages/messages.utils';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { PeopleService } from './people.service';
 
 @Controller('people')
 export class PeopleController {
-  constructor(
-    private readonly peopleService: PeopleService,
-    private readonly messagesUtils: MessagesUtils,
-  ) {}
+  constructor(private readonly peopleService: PeopleService) {}
 
   @Post()
   create(@Body() createPersonDto: CreatePersonDto) {
@@ -28,11 +24,6 @@ export class PeopleController {
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    console.log(
-      'Inverted String:',
-      this.messagesUtils.invertString('Fernando'),
-    );
-    // Use the Messages
     return this.peopleService.findAll(paginationDto);
   }
 
