@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { PeopleService } from 'src/people/people.service';
@@ -7,7 +7,9 @@ import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessageEntity } from './entities/message.entity';
 
-@Injectable()
+// Scope.DEFAULT means the service is a singleton, which is the default behavior in NestJS.
+// Exist other scopes like Scope.REQUEST and Scope.TRANSIENT, but for this service, we will keep it as a singleton.
+@Injectable({ scope: Scope.DEFAULT })
 export class MessagesService {
   constructor(
     @InjectRepository(MessageEntity)
