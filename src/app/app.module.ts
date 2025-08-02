@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from 'src/auth/auth.module';
 import { SimpleMiddleware } from 'src/common/middleware/simple.middleware';
 import { GlobalConfigModule } from 'src/global-config/global-config.module';
 import globalConfig from 'src/global-config/global.config';
@@ -38,6 +39,7 @@ import { AppService } from './app.service';
     MessagesModule,
     PeopleModule,
     GlobalConfigModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

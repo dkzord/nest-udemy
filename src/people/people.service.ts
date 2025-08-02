@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HashingServiceProtocol } from 'src/auth/hashing/hashing.service';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -15,14 +16,19 @@ export class PeopleService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
+    private readonly hashingService: HashingServiceProtocol,
   ) {}
 
   async create(createPersonDto: CreatePersonDto) {
     try {
+      const passwordHash = await this.hashingService.hash(
+        createPersonDto.password,
+      );
+
       const dataNewPerson = {
         name: createPersonDto.name,
         email: createPersonDto.email,
-        passwordHash: createPersonDto.password,
+        passwordHash,
       };
 
       const newPerson = this.personRepository.create(dataNewPerson);
@@ -63,10 +69,17 @@ export class PeopleService {
 
   async update(id: number, updatePersonDto: UpdatePersonDto) {
     const dataNewPerson = {
-      name: updatePersonDto?.name,
-      email: updatePersonDto?.email,
-      passwordHash: updatePersonDto?.password,
+      ...(updatePersonDto?.name && { name: updatePersonDto?.name }),
+      ...(updatePersonDto?.email && { email: updatePersonDto?.email }),
     };
+
+    if (updatePersonDto?.password) {
+      const passwordHash = await this.hashingService.hash(
+        updatePersonDto.password,
+      );
+
+      dataNewPerson['passwordHash'] = passwordHash;
+    }
 
     const person = await this.personRepository.preload({
       id,
