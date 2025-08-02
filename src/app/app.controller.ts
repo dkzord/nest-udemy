@@ -1,15 +1,17 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import appConfig from './app.config';
+import globalConfig from 'src/global-config/global.config';
 import { AppService } from './app.service';
 
 @Controller('home')
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    @Inject(appConfig.KEY)
-    private readonly appConfiguration: ConfigType<typeof appConfig>,
-  ) {}
+    @Inject(globalConfig.KEY)
+    private readonly globalConfiguration: ConfigType<typeof globalConfig>,
+  ) {
+    console.log('Database Type:', this.globalConfiguration.database.type);
+  }
 
   @Get()
   getHello(): string {
