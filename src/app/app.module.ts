@@ -1,41 +1,37 @@
-import * as Joi from '@hapi/joi';
 import {
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SimpleMiddleware } from 'src/common/middleware/simple.middleware';
 import { MessagesModule } from 'src/messages/messages.module';
 import { PeopleModule } from 'src/people/people.module';
+import appConfig from './app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        DB_TYPE: Joi.string().required(),
-        DB_HOST: Joi.string().required(),
-        DB_PORT: Joi.number().default(5432),
-        DB_USERNAME: Joi.string().required(),
-        DB_DATABASE: Joi.string().required(),
-        DB_PASSWORD: Joi.string().required(),
-        DB_SYNCHRONIZE: Joi.number().min(0).max(1).default(0),
-        DB_AUTO_LOAD_ENTITIES: Joi.number().min(0).max(1).default(0),
-      }),
-    }),
-    TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as 'postgres',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      database: process.env.DB_DATABASE,
-      password: process.env.DB_PASSWORD,
-      autoLoadEntities: Boolean(process.env.DB_SYNCHRONIZE),
-      synchronize: Boolean(process.env.DB_AUTO_LOAD_ENTITIES),
+    ConfigModule.forRoot(),
+    ConfigModule.forFeature(appConfig),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule.forFeature(appConfig)],
+      inject: [appConfig.KEY],
+      useFactory: async (appConfiguration: ConfigType<typeof appConfig>) => {
+        return {
+          type: appConfiguration.database.type,
+          host: appConfiguration.database.host,
+          port: appConfiguration.database.port,
+          username: appConfiguration.database.username,
+          database: appConfiguration.database.database,
+          password: appConfiguration.database.password,
+          autoLoadEntities: appConfiguration.database.autoLoadEntities,
+          synchronize: appConfiguration.database.synchronize,
+        };
+      },
     }),
     MessagesModule,
     PeopleModule,

@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { PeopleService } from 'src/people/people.service';
@@ -15,6 +16,7 @@ export class MessagesService {
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
     private readonly peopleService: PeopleService,
+    private readonly configService: ConfigService,
   ) {}
 
   trowNotFoundError(error: string) {
@@ -69,7 +71,6 @@ export class MessagesService {
   async create(createMessageDto: CreateMessageDto) {
     const { fromId, toId } = createMessageDto;
 
-    // Encontrar o emissor e o destinatário
     const fromPerson = await this.peopleService.findOne(fromId);
     const toPerson = await this.peopleService.findOne(toId);
 
