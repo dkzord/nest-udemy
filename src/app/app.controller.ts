@@ -9,9 +9,7 @@ export class AppController {
     private readonly appService: AppService,
     @Inject(globalConfig.KEY)
     private readonly globalConfiguration: ConfigType<typeof globalConfig>,
-  ) {
-    console.log('Database Type:', this.globalConfiguration.database.type);
-  }
+  ) {}
 
   @Get()
   getHello(): string {
