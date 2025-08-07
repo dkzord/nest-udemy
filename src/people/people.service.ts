@@ -1,9 +1,11 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 import { HashingServiceProtocol } from 'src/auth/hashing/hashing.service';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Repository } from 'typeorm';
@@ -67,7 +69,11 @@ export class PeopleService {
     return person;
   }
 
-  async update(id: number, updatePersonDto: UpdatePersonDto) {
+  async update(
+    id: number,
+    updatePersonDto: UpdatePersonDto,
+    tokenPayload: TokenPayloadDto,
+  ) {
     const dataNewPerson = {
       ...(updatePersonDto?.name && { name: updatePersonDto?.name }),
       ...(updatePersonDto?.email && { email: updatePersonDto?.email }),
@@ -90,16 +96,24 @@ export class PeopleService {
       throw new NotFoundException('Person not found');
     }
 
+    if (person.id !== tokenPayload.sub) {
+      throw new ForbiddenException('You can only update your own profile');
+    }
+
     return this.personRepository.save(person);
   }
 
-  async remove(id: number) {
+  async remove(id: number, tokenPayload: TokenPayloadDto) {
     const person = await this.personRepository.findOne({
       where: { id },
     });
 
     if (!person) {
       throw new NotFoundException('Person not found');
+    }
+
+    if (person.id !== tokenPayload.sub) {
+      throw new ForbiddenException('You can only delete your own profile');
     }
 
     return this.personRepository.softDelete(id);

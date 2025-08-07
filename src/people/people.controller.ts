@@ -7,12 +7,11 @@ import {
   Patch,
   Post,
   Query,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
-import { REQUEST_TOKEN_PAYLOAD_KEY } from 'src/auth/auth.constants';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
+import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
@@ -29,8 +28,7 @@ export class PeopleController {
 
   @Get()
   @UseGuards(AuthTokenGuard)
-  findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
-    console.log(req[REQUEST_TOKEN_PAYLOAD_KEY].sub);
+  findAll(@Query() paginationDto: PaginationDto) {
     return this.peopleService.findAll(paginationDto);
   }
 
@@ -42,13 +40,20 @@ export class PeopleController {
 
   @Patch(':id')
   @UseGuards(AuthTokenGuard)
-  update(@Param('id') id: string, @Body() updatePersonDto: UpdatePersonDto) {
-    return this.peopleService.update(+id, updatePersonDto);
+  update(
+    @Param('id') id: string,
+    @Body() updatePersonDto: UpdatePersonDto,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
+    return this.peopleService.update(+id, updatePersonDto, tokenPayload);
   }
 
   @Delete(':id')
   @UseGuards(AuthTokenGuard)
-  remove(@Param('id') id: string) {
-    return this.peopleService.remove(+id);
+  remove(
+    @Param('id') id: string,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
+    return this.peopleService.remove(+id, tokenPayload);
   }
 }
