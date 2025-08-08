@@ -1,6 +1,12 @@
-import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  Scope,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { PeopleService } from 'src/people/people.service';
 import { Repository } from 'typeorm';
@@ -68,11 +74,14 @@ export class MessagesService {
     this.trowNotFoundError('Message not found');
   }
 
-  async create(createMessageDto: CreateMessageDto) {
-    const { fromId, toId } = createMessageDto;
+  async create(
+    createMessageDto: CreateMessageDto,
+    tokenPayload: TokenPayloadDto,
+  ) {
+    const { toId } = createMessageDto;
 
-    const fromPerson = await this.peopleService.findOne(fromId);
     const toPerson = await this.peopleService.findOne(toId);
+    const fromPerson = await this.peopleService.findOne(tokenPayload.sub);
 
     const newMessage = {
       text: createMessageDto.text,
@@ -89,15 +98,27 @@ export class MessagesService {
       ...message,
       from: {
         id: message.from.id,
+        name: message.from.name,
       },
       to: {
         id: message.to.id,
+        name: message.to.name,
       },
     };
   }
 
-  async update(id: number, updateMessageDto: UpdateMessageDto) {
+  async update(
+    id: number,
+    updateMessageDto: UpdateMessageDto,
+    tokenPayload: TokenPayloadDto,
+  ) {
     const message = await this.findOne(id);
+
+    if (message.from.id !== tokenPayload.sub) {
+      throw new ForbiddenException(
+        'You are not allowed to update this message',
+      );
+    }
 
     message.text = updateMessageDto?.text ?? message.text;
     message.read = updateMessageDto?.read ?? message.read;
@@ -107,8 +128,16 @@ export class MessagesService {
     return message;
   }
 
-  async remove(id: number) {
-    this.messageRepository.softDelete(id);
+  async remove(id: number, tokenPayload: TokenPayloadDto) {
+    const message = await this.findOne(id);
+
+    if (message.from.id !== tokenPayload.sub) {
+      throw new ForbiddenException(
+        'You are not allowed to delete this message',
+      );
+    }
+
+    this.messageRepository.softDelete(message.id);
 
     return true;
   }

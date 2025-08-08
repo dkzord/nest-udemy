@@ -6,16 +6,15 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
   UseGuards,
-  UsePipes,
 } from '@nestjs/common';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
+import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
-import { ParseIntIdPipe } from 'src/common/pipes/parse-int-id.pipe';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { UpdateMessageDto } from './dtos/update-message.dto';
 import { MessagesService } from './messages.service';
@@ -36,9 +35,8 @@ import { MessagesService } from './messages.service';
     Data Transfer Object (DTO) é um padrão de projeto de software usado para transferir dados entre subsistemas de um software. DTOs são frequentemente usados em conjunção com objetos de acesso a dados para obter dados de um banco de dados.
     Os DTOs no Nest são classes simples que são usadas para transferir dados entre objetos. Eles podem ser usados para validar dados, para transformar dados, para transferir dados entre diferentes partes do sistema ou para enviar dados para um cliente.
 */
-@UseGuards(IsAdminGuard)
+
 @Controller('messages')
-@UsePipes(ParseIntIdPipe)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
@@ -54,20 +52,30 @@ export class MessagesController {
   }
 
   @Post()
-  create(@Body() createMessageDto: CreateMessageDto) {
-    return this.messagesService.create(createMessageDto);
+  @UseGuards(AuthTokenGuard)
+  create(
+    @Body() createMessageDto: CreateMessageDto,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
+    return this.messagesService.create(createMessageDto, tokenPayload);
   }
 
   @Patch(':id')
+  @UseGuards(AuthTokenGuard)
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updateMessageDto: UpdateMessageDto,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
   ) {
-    return this.messagesService.update(id, updateMessageDto);
+    return this.messagesService.update(id, updateMessageDto, tokenPayload);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.messagesService.remove(id);
+  @UseGuards(AuthTokenGuard)
+  remove(
+    @Param('id') id: number,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
+    return this.messagesService.remove(id, tokenPayload);
   }
 }
